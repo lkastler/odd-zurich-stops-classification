@@ -1,8 +1,9 @@
-STOPS=data/haltepunkt.csv
-COORDINATES=data/haltestellen_coordinates.csv
-OVERPASS=data/overpass.csv
-OVER_NO_DUPS=data/overpass.csv
-OVER_CLASS=data/overpass_classes.csv
+DATA=data
+STOPS=${DATA}/haltepunkt.csv
+COORDINATES=${DATA}/haltestellen_coordinates.csv
+OVERPASS=${DATA}/overpass.csv
+OVER_NO_DUPS=${DATA}/overpass.csv
+OVER_CLASS=${DATA}/overpass_classes.csv
 
 PYTHON=python3
 
@@ -11,7 +12,7 @@ classify: ${OVER_NO_DUPS}
 	${PYTHON} classify.py
 
 ${OVER_NO_DUPS}: ${OVERPASS}
-	${PYTHON} duplicate_elimination.py
+	cat ${OVERPASS} | sort | uniq > ${OVER_NO_DUPS}
 ${OVERPASS}: ${COORDINATES}
 	${PYTHON} overpass_api.py
 

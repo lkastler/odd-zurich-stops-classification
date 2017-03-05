@@ -12,6 +12,13 @@ space = Decimal(0.0001)
 
 
 def get_data(lat, lon, r):
+	"""
+	receives objects with amenity tag from Overpass API at a given point.
+	:param lat: latitude
+	:param lon: longitude
+	:param r: range to query for
+	:return: yields objects with amenity tag in the given proximity.
+	"""
 	getcontext().prec = 6
 	ds = Decimal(str(lat))
 	dw = Decimal(str(lon))
@@ -25,11 +32,9 @@ def get_data(lat, lon, r):
 
 with open('data/haltestellen_coordinates.csv') as coordinates:
 	reader = csv.reader(coordinates)
-	out = open('data/overpass.csv', 'w')
-	writer = csv.writer(out)
+	with open('data/overpass.csv', 'w') as out:
+		writer = csv.writer(out)
 
-	for row in reader:
-		for x in get_data(row[0], row[1], 500):
-			writer.writerow(x)
-
-	out.close()
+		for row in reader:
+			for x in get_data(row[0], row[1], 500):
+				writer.writerow(x)
